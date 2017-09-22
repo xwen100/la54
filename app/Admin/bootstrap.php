@@ -18,4 +18,8 @@
  *
  */
 
+use App\Admin\Extensions\KEditor;
+
 Encore\Admin\Form::forget(['map', 'editor']);
+Encore\Admin\Form::extend('keditor', KEditor::class);
+

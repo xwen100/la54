@@ -12,5 +12,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
     $router->resource('users', "UsersController");
-
+    $router->resource('article', "ArticleController");
+    $router->resource('cat', "CatController");
+    
 });
