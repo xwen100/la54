@@ -1,7 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
-    <h2>已登录</h2>
+    <div class="row">
+        <div class="col-md-10">
+        	@foreach($list as $k => $v)
+			<div class="articl-wrap">
+			    <h2>{{$v['title']}}</h2>
+			    <p class="p1">作者： {{$v['username']}} • {{$v['created_at']}} </p>
+			    <div class="d1">{{$v['desc']}}
+			    </div>
+			    <p class="p2">
+			        <a href="{{url('article/read',$v['id'])}}" class="btn btn-default">阅读全文</a>
+			    </p>
+			    <hr>
+			    <p class="p3">
+			        <span class="glyphicon glyphicon-tag"></span>{{$v['name']}}
+			    </p>
+			</div>
+			@endforeach
+        </div>
+        <div class="col-md-2">
+            @include('right')
+        </div>
+    </div>
 </div>
+
 @endsection
+

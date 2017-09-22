@@ -47,6 +47,7 @@ class CatController extends Controller
     {
     	return Admin::form(Cat::class, function(Form $form){
     		$form->text('name', '名称');
+            $form->hidden('user_id')->value(Admin::user()->id);
     	});
     }
 
