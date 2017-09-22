@@ -78,7 +78,7 @@
             @endif
 
             <div class="content">
-                <h2>网站开发中.....</h2>
+                <h2>网站开发中......</h2>
             </div>
         </div>
     </body>
