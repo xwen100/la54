@@ -14,5 +14,7 @@ Route::group([
     $router->resource('users', "UsersController");
     $router->resource('article', "ArticleController");
     $router->resource('cat', "CatController");
+    $router->resource('album', "AlbumController");
+    $router->get('album/get/{id}', 'AlbumController@getAlbumImage');
     
 });

@@ -37,7 +37,8 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                         <li><a href="/home">文章</a></li>
+                         <li><a href="#">相册</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
