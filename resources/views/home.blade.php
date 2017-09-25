@@ -28,14 +28,14 @@
     <nav aria-label="...">
 	  <ul class="pager">
 	  	@if ($list['prev_page_url'] != null)
-	    <li><a href="{{$list['prev_page_url']}}">Previous</a></li>
+	    <li><a href="{{$list['prev_page_url']}}">上一页</a></li>
 	    @else
-	    <li class="disabled"><a href="javascript:;">Previous</a></li>
+	    <li class="disabled"><a href="javascript:;">上一页</a></li>
 	    @endif
 	  	@if ($list['next_page_url'] !== null)
-	    <li><a href="{{$list['next_page_url']}}">Next</a></li>
+	    <li><a href="{{$list['next_page_url']}}">下一页</a></li>
 	    @else
-	    <li class="disabled"><a href="javascript:;">Next</a></li>
+	    <li class="disabled"><a href="javascript:;">下一页</a></li>
 	    @endif
 	  </ul>
 	</nav>
