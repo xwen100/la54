@@ -29,7 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $catList = Cat::where('user_id', Auth::user()->admin_id)->get()->toArray();
+        $catList = $this->getCat();
         $param = request()->all();
         $catId = array_key_exists('cat', $param) ? $param['cat'] : 0;
         $where = [
@@ -47,5 +47,25 @@ class HomeController extends Controller
                 ->orderBy('id', 'desc')
                 ->get()->toArray();
         return view('home', ['catList'=>$catList, 'list'=>$list]);
+    }
+
+    private function getCat()
+    {
+        $list = Cat::where('user_id', Auth::user()->admin_id)->get()->toArray();
+        return $list;
+    }
+
+    public function read($id)
+    {
+        $catList = $this->getCat();
+        $data = Article::from('articles as a')
+                ->leftJoin('cats as c', 'a.cat_id', '=', 'c.id')
+                ->leftJoin('users as u', 'a.user_id', '=', 'u.admin_id')
+                ->where('a.id', $id)
+                ->where('a.user_id', Auth::user()->admin_id)
+                ->first(['a.title', 'a.id', 'a.content', 'u.name as username', 'a.created_at', 'a.desc', 'c.name'])->toArray();
+        $data['created_at'] = date('Y-m-d', strtotime($data['created_at']));
+
+        return view('article/read', ['data'=>$data, 'catList'=>$catList]);
     }
 }

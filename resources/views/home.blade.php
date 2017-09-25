@@ -12,7 +12,7 @@
 			    <div class="d1">{{$v['desc']}}
 			    </div>
 			    <p class="p2">
-			        <a href="{{url('article/read',$v['id'])}}" class="btn btn-default">阅读全文</a>
+			        <a href="{{url('home/read',$v['id'])}}" class="btn btn-default">阅读全文</a>
 			    </p>
 			    <hr>
 			    <p class="p3">

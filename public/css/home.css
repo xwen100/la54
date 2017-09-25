@@ -1,0 +1,22 @@
+.articl-wrap {
+	background: #FFF;
+	padding: 30px;
+	margin-bottom: 30px;
+}
+.articl-wrap h2 {
+	text-align: center;
+}
+.articl-wrap .p1 {
+	text-align: center;
+}
+.articl-wrap .p2 {
+	padding-top: 30px;
+}
+.articl-wrap .p3 span {
+	padding-right: 5px;
+}
+.cat_wrap {
+	background: #FFF;
+	padding: 10px;
+
+}
