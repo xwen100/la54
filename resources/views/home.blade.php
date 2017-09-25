@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10">
-        	@foreach($list as $k => $v)
+        	@foreach($list['data'] as $k => $v)
 			<div class="articl-wrap">
 			    <h2>{{$v['title']}}</h2>
 			    <p class="p1">作者： {{$v['username']}} • {{$v['created_at']}} </p>
@@ -25,6 +25,20 @@
             @include('right')
         </div>
     </div>
+    <nav aria-label="...">
+	  <ul class="pager">
+	  	@if ($list['prev_page_url'] != null)
+	    <li><a href="{{$list['prev_page_url']}}">Previous</a></li>
+	    @else
+	    <li class="disabled"><a href="javascript:;">Previous</a></li>
+	    @endif
+	  	@if ($list['next_page_url'] !== null)
+	    <li><a href="{{$list['next_page_url']}}">Next</a></li>
+	    @else
+	    <li class="disabled"><a href="javascript:;">Next</a></li>
+	    @endif
+	  </ul>
+	</nav>
 </div>
 
 @endsection

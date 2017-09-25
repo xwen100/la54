@@ -45,7 +45,18 @@ class HomeController extends Controller
                 ->select(['a.title', 'a.id', 'u.name as username', 'a.created_at', 'a.desc', 'c.name'])
                 ->where($where)
                 ->orderBy('id', 'desc')
-                ->get()->toArray();
+                ->simplePaginate(3)->toArray();
+        if($catId > 0)
+        {
+            if($list['next_page_url'] !== null)
+            {
+                $list['next_page_url'] .= '&cat='.$catId;
+            }
+            if($list['prev_page_url'] !== null)
+            {
+                $list['prev_page_url'] .= '&cat='.$catId;
+            }
+        }
         return view('home', ['catList'=>$catList, 'list'=>$list]);
     }
 
