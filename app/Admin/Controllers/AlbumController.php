@@ -33,7 +33,7 @@ class AlbumController extends Controller
 			$grid->name('名称');
 			$grid->cover_url('封面')->value(function($v){
 	            $id = Album::where('cover_url', $v)->value('id');
-				return '<img src="album/get/'.$id.'" class="img img-thumbnail" width="80" >';
+				return '<img src="album/get/'.$id.'?+" class="img img-thumbnail" width="80" >';
 			});
 			$grid->image_num('照片数量');
 			$grid->created_at('创建时间');
@@ -54,10 +54,9 @@ class AlbumController extends Controller
 	private function form()
     {
     	return Admin::form(Album::class, function(Form $form){
+    		$form->setAction('/admin/album/save');
     		$form->text('name', '名称');
     		$form->image('cover_url', '封面');
-            $userId = Admin::user()->id;
-            $form->hidden('user_id')->value($userId);
     	});
     }
 
@@ -65,8 +64,22 @@ class AlbumController extends Controller
     {
 
         $coverUrl = Album::where('id', $id)->value('cover_url');
-        $filename = public_path().'/upload/'.$coverUrl;
+        $filename = public_path() . $coverUrl;
         readImage($filename);
+    }
+
+    public function save()
+    {
+    	$params = request()->all();
+    	if($_FILES['cover_url']['tmp_name'] && ($_FILES['cover_url']['type'] == 'image/jpeg')){
+    		$filename = uploadImage($_FILES['cover_url']['tmp_name']);
+			$album = new Album();
+			$album->user_id = Admin::user()->id;
+			$album->name = $params['name'];
+			$album->cover_url = $filename;
+			$album->save();
+    	}
+    	return redirect('/admin/album');
     }
 
     public function edit($id)
@@ -80,16 +93,40 @@ class AlbumController extends Controller
     private function editForm()
     {
     	return Admin::form(Album::class, function(Form $form){
+    				$form->setAction('/admin/album/update');
 		    		$form->text('name', '名称');
-		    		$form->display('cover_url', '封面')->with(function($v){
+		    		$id = 0;
+		    		$form->display('cover_url', '封面')->with(function($v)use(&$id){
 		    			$id = Album::where('cover_url', $v)->value('id');
-						return '<img src="/admin/album/get/'.$id.'" class="img img-thumbnail" width="200" >';
+						return '<img src="/admin/album/get/'.$id.'?+" class="img img-thumbnail" width="200" >';
 		    		});
-		            $userId = Admin::user()->id;
-		            $form->hidden('user_id')->value($userId);
+    				$form->image('n_cover_url', '新封面');
+    				$form->hidden('cover_url')->value($form->cover_url);
+    				$form->hidden('id')->value($id);
 		    	});
     }
 
+    public function update()
+    {
+    	$params = request()->all();
+		$album = Album::where('id', $params['id'])->first();
+		$album->name = $params['name'];
+    	if($_FILES['n_cover_url']['tmp_name'] && ($_FILES['n_cover_url']['type'] == 'image/jpeg')){
+    		$filename = uploadImage($_FILES['n_cover_url']['tmp_name']);
+			$album->cover_url = $filename;
+            unlink(public_path() . $params['cover_url']);
+    	}
+		$album->save();
+    	return redirect('/admin/album');
+    }
+
+    public function destroy($id)
+    {
+    	$album = Album::where('id', $id)->first();
+    	unlink(public_path() . $album->cover_url);
+    	$album->delete();
+    	return redirect('/admin/album');
+    }
 
 }
 
