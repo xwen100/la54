@@ -30,3 +30,15 @@ CREATE TABLE `albums` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
+#相片表
+CREATE TABLE `image` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `album_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `show` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1显示0不显示',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
