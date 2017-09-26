@@ -16,5 +16,7 @@ Route::group([
     $router->resource('cat', "CatController");
     $router->resource('album', "AlbumController");
     $router->get('album/get/{id}', 'AlbumController@getAlbumImage');
+    $router->post('album/save', 'AlbumController@save');
+    $router->put('album/update', 'AlbumController@update');
     
 });
