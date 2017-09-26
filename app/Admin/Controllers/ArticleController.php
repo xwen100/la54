@@ -34,6 +34,7 @@ class ArticleController extends Controller
     	return Admin::grid(Article::class, function(Grid $grid){
     		$grid->disableExport();
     		$grid->disableFilter();
+            $grid->model()->orderBy('id', 'desc');
 			$grid->id('ID');
 			$grid->title('标题');
             $grid->cat_id('分类')->display(function($cat_id){
