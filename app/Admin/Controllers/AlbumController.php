@@ -12,6 +12,9 @@ use Encore\Admin\Form;
 
 use App\Album;
 
+use Validator;
+use Illuminate\Validation\Rule;
+
 class AlbumController extends Controller
 {
     use ModelForm;
@@ -71,6 +74,15 @@ class AlbumController extends Controller
     public function save()
     {
     	$params = request()->all();
+
+    	$validator = Validator::make($params, [
+            'name' => 'required|unique:albums|max:255'
+        ],[
+        	'required' => '名称必填',
+        	'unique' => '名称必须唯一',
+        	'max' => '名称过长'
+        ])->validate();
+
     	if($_FILES['cover_url']['tmp_name'] && ($_FILES['cover_url']['type'] == 'image/jpeg')){
     		$filename = uploadImage($_FILES['cover_url']['tmp_name']);
 			$album = new Album();
@@ -109,6 +121,17 @@ class AlbumController extends Controller
     public function update()
     {
     	$params = request()->all();
+    	$validator = Validator::make($params, [
+            'name' => [
+            		'required',
+            		Rule::unique('albums')->ignore($params['id']),
+            		'max:255'
+            	]
+        ],[
+        	'required' => '名称必填',
+        	'unique' => '名称必须唯一',
+        	'max' => '名称过长'
+        ])->validate();
 		$album = Album::where('id', $params['id'])->first();
 		$album->name = $params['name'];
     	if($_FILES['n_cover_url']['tmp_name'] && ($_FILES['n_cover_url']['type'] == 'image/jpeg')){
