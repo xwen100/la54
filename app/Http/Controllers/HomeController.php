@@ -45,7 +45,11 @@ class HomeController extends Controller
                 ->select(['a.title', 'a.id', 'u.name as username', 'a.created_at', 'a.desc', 'c.name'])
                 ->where($where)
                 ->orderBy('id', 'desc')
-                ->simplePaginate(3)->toArray();
+                ->simplePaginate(5)->toArray();
+        $list['data'] = collect($list['data'])->map(function($v, $k){
+                            $v['created_at'] = date('Y-m-d', strtotime($v['created_at']));
+                            return $v;
+                        });
         if($catId > 0)
         {
             if($list['next_page_url'] !== null)

@@ -32,7 +32,6 @@ class AlbumController extends Controller
 			$grid->id('ID');
 			$grid->name('名称');
 			$grid->cover_url('封面')->value(function($v){
-	            $filename = public_path().'/upload/'.$v;
 	            $id = Album::where('cover_url', $v)->value('id');
 				return '<img src="album/get/'.$id.'" class="img img-thumbnail" width="80" >';
 			});
@@ -68,6 +67,27 @@ class AlbumController extends Controller
         $coverUrl = Album::where('id', $id)->value('cover_url');
         $filename = public_path().'/upload/'.$coverUrl;
         readImage($filename);
+    }
+
+    public function edit($id)
+    {
+        return Admin::content(function(Content $content) use ($id){
+            $content->header('编辑相册');
+            $content->body($this->editForm()->edit($id));
+        });
+    }
+
+    private function editForm()
+    {
+    	return Admin::form(Album::class, function(Form $form){
+		    		$form->text('name', '名称');
+		    		$form->display('cover_url', '封面')->with(function($v){
+		    			$id = Album::where('cover_url', $v)->value('id');
+						return '<img src="/admin/album/get/'.$id.'" class="img img-thumbnail" width="200" >';
+		    		});
+		            $userId = Admin::user()->id;
+		            $form->hidden('user_id')->value($userId);
+		    	});
     }
 
 
