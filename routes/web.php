@@ -14,14 +14,14 @@
 Route::get('/', function () {
 	return redirect('/login');
 });
-
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-
+Route::get('/home/read/{id}', 'HomeController@read');
+Route::get('/album', 'AlbumController@index');
+Route::get('/album/get/{id}', 'AlbumController@get');
+Route::get('/image/{albumId}', 'ImageController@index');
+Route::get('/image/get/{id}', 'ImageController@get');
 Route::group(['middleware'=>'auth'], function(){
-	Route::get('/home/read/{id}', 'HomeController@read');
 	
 });
 

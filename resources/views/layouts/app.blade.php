@@ -39,7 +39,7 @@
                     <ul class="nav navbar-nav">
                         @unless (Auth::guest())
                         <li><a href="/home">文章</a></li>
-                        <li><a href="#">相册</a></li>
+                        <li><a href="/album">相册</a></li>
                         @endunless   
                     </ul>
 
@@ -78,7 +78,11 @@
         @yield('content')
     </div>
 
+    <div id="mask" class="mask"></div>
+    <div id="imageWrap"></div>
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 </body>
 </html>

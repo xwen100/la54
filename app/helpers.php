@@ -16,7 +16,7 @@ function uploadImage($file)
 	$path = '/upload/image/' . date('Ymd');
 	 if(!is_dir($root . $path))
 	 {
-	 	mkdir($root . $path, 0777);
+	 	mkdir($root . $path, 0777, true);
 	 }
 	 $name = md5(uniqid()) . '.jpg';
 	 $filename =  $path . '/' . $name;

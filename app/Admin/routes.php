@@ -18,9 +18,13 @@ Route::group([
     $router->get('album/get/{id}', 'AlbumController@getAlbumImage');
     $router->post('album/save', 'AlbumController@save');
     $router->put('album/update', 'AlbumController@update');
-    $router->get('album/{id}/images', "AlbumController@getImages");
+    $router->get('image/{albumId}', "ImageController@index");
     $router->get('image/{albumId}/create', "ImageController@create");
     $router->post('image/save', "ImageController@save");
     $router->get('image/get/{id}', 'ImageController@getImage');
+    $router->get('image/{id}/edit', 'ImageController@edit');
+    $router->post('image/update/{id}', 'ImageController@update');
+    $router->get('image/destroy/{id}', 'ImageController@destroy');
+    $router->get('image/{id}/set', 'ImageController@set');
     
 });

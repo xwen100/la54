@@ -40,13 +40,17 @@ class AlbumController extends Controller
 			$grid->id('ID');
 			$grid->name('名称');
 			$grid->cover_url('封面')->value(function($v){
-	            $id = Album::where('cover_url', $v)->value('id');
-				return '<img src="album/get/'.$id.'?+" class="img img-thumbnail" width="80" >';
+                if($v != '')
+                {
+                    $id = Album::where('cover_url', $v)->value('id');
+                    return '<img src="album/get/'.$id.'?'.microtime(true).'" class="img img-thumbnail" width="80" >';
+                }
+                return '暂无封面';
 			});
 			$grid->image_num('照片数量');
 			$grid->created_at('创建时间');
 	        $grid->actions(function($actions){
-	            $actions->append('<a href="album/'.$actions->getkey().'/images"><i class="fa fa-file-image-o"></i></a>');
+	            $actions->append('<a href="image/'.$actions->getkey().'"><i class="fa fa-file-image-o"></i></a>');
 	        });
 		});
 	}
@@ -64,7 +68,7 @@ class AlbumController extends Controller
     	return Admin::form(Album::class, function(Form $form){
     		$form->setAction('/admin/album/save');
     		$form->text('name', '名称');
-    		$form->image('cover_url', '封面');
+    		//$form->image('cover_url', '封面');
     	});
     }
 
@@ -88,14 +92,18 @@ class AlbumController extends Controller
         	'max' => '名称过长'
         ])->validate();
 
-    	if($_FILES['cover_url']['tmp_name'] && ($_FILES['cover_url']['type'] == 'image/jpeg')){
+    	/*if($_FILES['cover_url']['tmp_name'] && ($_FILES['cover_url']['type'] == 'image/jpeg')){
     		$filename = uploadImage($_FILES['cover_url']['tmp_name']);
 			$album = new Album();
 			$album->user_id = Admin::user()->id;
 			$album->name = $params['name'];
 			$album->cover_url = $filename;
 			$album->save();
-    	}
+    	}*/
+        $album = new Album();
+        $album->user_id = Admin::user()->id;
+        $album->name = $params['name'];
+        $album->save();
     	return redirect('/admin/album');
     }
 
@@ -117,8 +125,8 @@ class AlbumController extends Controller
 		    			$id = Album::where('cover_url', $v)->value('id');
 						return '<img src="/admin/album/get/'.$id.'?+" class="img img-thumbnail" width="200" >';
 		    		});
-    				$form->image('n_cover_url', '新封面');
-    				$form->hidden('cover_url')->value($form->cover_url);
+    				//$form->image('n_cover_url', '新封面');
+    				//$form->hidden('cover_url')->value($form->cover_url);
     				$form->hidden('id')->value($id);
 		    	});
     }
@@ -139,45 +147,26 @@ class AlbumController extends Controller
         ])->validate();
 		$album = Album::where('id', $params['id'])->first();
 		$album->name = $params['name'];
-    	if($_FILES['n_cover_url']['tmp_name'] && ($_FILES['n_cover_url']['type'] == 'image/jpeg')){
+    	/*if($_FILES['n_cover_url']['tmp_name'] && ($_FILES['n_cover_url']['type'] == 'image/jpeg')){
     		$filename = uploadImage($_FILES['n_cover_url']['tmp_name']);
 			$album->cover_url = $filename;
             unlink(public_path() . $params['cover_url']);
-    	}
+    	}*/
 		$album->save();
     	return redirect('/admin/album');
     }
 
     public function destroy($id)
     {
+        if(Image::where('album_id', $id)->count() > 0)
+            return back();
+            
     	$album = Album::where('id', $id)->first();
-    	unlink(public_path() . $album->cover_url);
+    	//unlink(public_path() . $album->cover_url);
     	$album->delete();
     	return redirect('/admin/album');
     }
 
-    public function getImages($id)
-    {
-        return Admin::content(function(Content $content) use ($id){
-            $content->header('照片列表');
-            $content->row('<a href="/admin/image/'.$id.'/create" class="btn btn-primary" style="margin-bottom:10px; float: right;">添加照片</a>');
-            $imageList = Image::where('album_id', $id)
-                            ->where('user_id', Admin::user()->id)
-                            ->orderBy('id', 'desc')
-                            ->get()->toArray();
-            $content->row(function(Row $row) use ($id, $imageList) {
-                collect($imageList)->map(function($v, $k) use ($id, $row){
-                    $show = $v['show'] == 1 ? '显示' : '不显示';
-                    $content = '<p><img src="/admin/image/get/'.$v['id'].'" width="300"></p>';
-                    $content .= '<p>'. $show .'</p>';
-                    $content .= '<p style="text-align:right;"><a style="padding-right:10px;" href="/admin/image/'.$id.'/edit/'.$v['id'].'"><i class="fa fa-edit"></i></a><a style="padding-right:10px;" href="/admin/image/'.$id.'/destory/'.$v['id'].'"><i class="fa fa-trash"></i></a></p>';
-                    $box = new Box($v['name'], $content);
-                    $row->column(4, $box);
-                });
-            });
-            
-        });
-    }
 
 }
 

