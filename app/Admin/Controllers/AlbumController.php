@@ -10,10 +10,15 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Grid;
 use Encore\Admin\Form;
 
+use Encore\Admin\Widgets\Box;
+use Encore\Admin\Layout\Row;
+
 use App\Album;
 
 use Validator;
 use Illuminate\Validation\Rule;
+
+use App\Image;
 
 class AlbumController extends Controller
 {
@@ -41,7 +46,7 @@ class AlbumController extends Controller
 			$grid->image_num('照片数量');
 			$grid->created_at('创建时间');
 	        $grid->actions(function($actions){
-	            $actions->append('<a href="'.url('/admin/image',['id'=>$actions->getkey()]).'"><i class="fa fa-file-image-o"></i></a>');
+	            $actions->append('<a href="album/'.$actions->getkey().'/images"><i class="fa fa-file-image-o"></i></a>');
 	        });
 		});
 	}
@@ -149,6 +154,29 @@ class AlbumController extends Controller
     	unlink(public_path() . $album->cover_url);
     	$album->delete();
     	return redirect('/admin/album');
+    }
+
+    public function getImages($id)
+    {
+        return Admin::content(function(Content $content) use ($id){
+            $content->header('照片列表');
+            $content->row('<a href="/admin/image/'.$id.'/create" class="btn btn-primary" style="margin-bottom:10px; float: right;">添加照片</a>');
+            $imageList = Image::where('album_id', $id)
+                            ->where('user_id', Admin::user()->id)
+                            ->orderBy('id', 'desc')
+                            ->get()->toArray();
+            $content->row(function(Row $row) use ($id, $imageList) {
+                collect($imageList)->map(function($v, $k) use ($id, $row){
+                    $show = $v['show'] == 1 ? '显示' : '不显示';
+                    $content = '<p><img src="/admin/image/get/'.$v['id'].'" width="300"></p>';
+                    $content .= '<p>'. $show .'</p>';
+                    $content .= '<p style="text-align:right;"><a style="padding-right:10px;" href="/admin/image/'.$id.'/edit/'.$v['id'].'"><i class="fa fa-edit"></i></a><a style="padding-right:10px;" href="/admin/image/'.$id.'/destory/'.$v['id'].'"><i class="fa fa-trash"></i></a></p>';
+                    $box = new Box($v['name'], $content);
+                    $row->column(4, $box);
+                });
+            });
+            
+        });
     }
 
 }

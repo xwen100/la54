@@ -31,7 +31,7 @@ CREATE TABLE `albums` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 #相片表
-CREATE TABLE `image` (
+CREATE TABLE `images` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
