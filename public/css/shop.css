@@ -1,0 +1,47 @@
+.image-wrap {
+	overflow: hidden;
+	background: #FFF;
+	margin-bottom: 30px;
+}
+.image-wrap h2 {
+	padding-left: 10px;
+}
+.caption h3 {
+	margin-left: 10px;
+	margin-bottom: 20px;
+}
+.read-left {
+	border-right: 1px solid #eaeced;
+}
+.read-right h2 {
+	padding-bottom: 20px;
+}
+.read-right dl {
+	overflow: hidden;
+}
+.read-right dt, .read-right dd {
+	display: inline-block;
+}
+.read-right dd.price {
+	color: #009fd0;
+	font-weight: bold;
+}
+.read-right p.add-btn {
+	margin-top: 20px;
+}
+.read-right span.icon {
+	padding-right: 5px;
+}
+.desc-wrap {
+	overflow: hidden;
+}
+.cart-btn {
+	text-align: right;
+}
+.consignee-info dl {
+	overflow: hidden;
+}
+.consignee-info dt, .consignee-info dd {
+	float: left;
+	display: inline-block;
+}

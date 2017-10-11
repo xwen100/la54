@@ -42,3 +42,34 @@ CREATE TABLE `images` (
   `show` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1显示0不显示',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
+#商品分类
+CREATE TABLE `goods_cats` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+#商品表
+CREATE TABLE `goods` (
+`id`  int UNSIGNED NOT NULL AUTO_INCREMENT ,
+`cat_id`  int UNSIGNED NOT NULL DEFAULT 0 ,
+`sn`  varchar(255) NOT NULL DEFAULT '' ,
+`name`  varchar(255) NOT NULL DEFAULT '' ,
+`logo`  varchar(255) NOT NULL DEFAULT '' ,
+`price`  decimal(10,2) NOT NULL DEFAULT 0 ,
+`is_rec` tinyint(4) NOT NULL DEFAULT 0,
+`desc` text,
+`updated_at`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+`created_at`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+#会员表
+CREATE TABLE `members` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255)  NOT NULL DEFAULT '',
+  `password` varchar(255)  NOT NULL DEFAULT '',
+  `salt` char(6)  NOT NULL DEFAULT '',
+  `phone` char(11)  NOT NULL DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;

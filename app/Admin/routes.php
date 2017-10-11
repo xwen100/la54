@@ -26,5 +26,8 @@ Route::group([
     $router->post('image/update/{id}', 'ImageController@update');
     $router->get('image/destroy/{id}', 'ImageController@destroy');
     $router->get('image/{id}/set', 'ImageController@set');
+
+    $router->resource('goods/cat', 'GoodsCatController');
+    $router->resource('goods', 'GoodsController');
     
 });

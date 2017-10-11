@@ -11,6 +11,7 @@ use Encore\Admin\Widgets\InfoBox;
 
 use App\User;
 use App\Article;
+use App\Image;
 
 class HomeController extends Controller
 {
@@ -22,10 +23,12 @@ class HomeController extends Controller
 
             $userCount = User::count();
             $articleCount = Article::count();
+            $imageCount = Image::count();
 
-            $content->row(function (Row $row) use ($userCount, $articleCount) {
+            $content->row(function (Row $row) use ($userCount, $articleCount,$imageCount ) {
                 $row->column(3, new InfoBox('会员总数', 'users', 'aqua', '/admin/users', $userCount));
                 $row->column(3, new InfoBox('文章总数', 'stack-overflow', 'olive', '/admin/article', $articleCount));
+                $row->column(3, new InfoBox('图片总数', 'image', 'green', '/admin/album', $imageCount));
             });
 
         });
